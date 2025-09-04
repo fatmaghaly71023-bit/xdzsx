@@ -86,6 +86,25 @@ export function ResultCard({ name, grade, category, rank }: ResultCardProps) {
           </div>
         </div>
         
+        {/* عرض الترتيب فوق الاسم */}
+        {rank && (
+          <div className="mb-4">
+            <Badge 
+              variant="outline" 
+              className={cn(
+                "text-lg font-bold px-6 py-3 border-2",
+                rank <= 3 
+                  ? "bg-gradient-golden text-accent-foreground border-accent/40 golden-glow animate-pulse" 
+                  : rank <= 10
+                  ? "bg-gradient-islamic text-primary-foreground border-primary/40 glow-effect"
+                  : "bg-secondary text-secondary-foreground border-secondary/40"
+              )}
+            >
+              🏆 الترتيب {rank} {category && getCategoryName(category) ? `في فئة ${getCategoryName(category)}` : 'عام'}
+            </Badge>
+          </div>
+        )}
+        
         <CardTitle className="text-xl font-bold mb-2 text-foreground">
           {name}
         </CardTitle>
@@ -112,29 +131,11 @@ export function ResultCard({ name, grade, category, rank }: ResultCardProps) {
             </Badge>
           )}
           
-          {rank && (
-            <div className="mt-3">
-              <Badge 
-                variant="outline" 
-                className={cn(
-                  "text-lg font-bold px-6 py-3 border-2",
-                  rank <= 3 
-                    ? "bg-gradient-golden text-accent-foreground border-accent/40 golden-glow animate-pulse" 
-                    : rank <= 10
-                    ? "bg-gradient-islamic text-primary-foreground border-primary/40 glow-effect"
-                    : "bg-secondary text-secondary-foreground border-secondary/40"
-                )}
-              >
-                🏆 الترتيب {rank} {category && getCategoryName(category) ? `في فئة ${getCategoryName(category)}` : 'عام'}
-              </Badge>
-            </div>
-          )}
-          
           {/* إذا لم تكن هناك فئة أو ترتيب، اعرض رسالة توضيحية */}
-          {!category && !rank && (
+          {!category && (
             <div className="mt-4 p-3 rounded-lg bg-blue-50 border border-blue-200">
               <p className="text-blue-800 text-sm text-center font-medium">
-                📋 لم يتم تحديد الفئة أو الترتيب لهذا المشارك
+                📋 لم يتم تحديد الفئة لهذا المشارك
               </p>
             </div>
           )}
