@@ -63,7 +63,7 @@ export function ResultCard({ name, grade, category, rank }: ResultCardProps) {
       case 15: return "خمسة عشر جزءاً"
       case 20: return "عشرون جزءاً"
       case 30: return "القرآن كاملاً"
-      default: return "غير محدد"
+      default: return null
     }
   }
 
@@ -106,9 +106,9 @@ export function ResultCard({ name, grade, category, rank }: ResultCardProps) {
         
         {/* عرض الفئة والترتيب بشكل منفصل */}
         <div className="mt-4 space-y-3">
-          {category && (
-            <Badge variant="outline" className="text-lg px-4 py-2 bg-blue-50 text-blue-800 border-blue-200">
-              فئة {getCategoryName(category)}
+          {category && getCategoryName(category) && (
+            <Badge variant="outline" className="text-lg px-4 py-2 bg-blue-50 text-blue-800 border-blue-200 font-semibold">
+              📚 فئة {getCategoryName(category)}
             </Badge>
           )}
           
@@ -125,8 +125,17 @@ export function ResultCard({ name, grade, category, rank }: ResultCardProps) {
                     : "bg-secondary text-secondary-foreground border-secondary/40"
                 )}
               >
-                الترتيب {rank} {category ? `في فئة ${getCategoryName(category)}` : ''}
+                🏆 الترتيب {rank} {category && getCategoryName(category) ? `في فئة ${getCategoryName(category)}` : 'عام'}
               </Badge>
+            </div>
+          )}
+          
+          {/* إذا لم تكن هناك فئة أو ترتيب، اعرض رسالة توضيحية */}
+          {!category && !rank && (
+            <div className="mt-4 p-3 rounded-lg bg-blue-50 border border-blue-200">
+              <p className="text-blue-800 text-sm text-center font-medium">
+                📋 لم يتم تحديد الفئة أو الترتيب لهذا المشارك
+              </p>
             </div>
           )}
         </div>

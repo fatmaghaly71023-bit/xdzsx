@@ -37,7 +37,8 @@ export function SearchSection() {
         .from('results')
         .select('name, no, category, grade, rank')
         .ilike('name', `%${cleanSearchTerm}%`)
-        .limit(1) // عرض نتيجة واحدة فقط
+        .order('grade', { ascending: false })
+        .limit(5) // عرض أكثر من نتيجة للتأكد من العثور على الصحيحة
       
       // إذا لم نجد نتائج، نجرب البحث بالكلمات المنفصلة
       if (data && data.length === 0 && cleanSearchTerm.includes(' ')) {
@@ -48,7 +49,8 @@ export function SearchSection() {
           .from('results')
           .select('name, no, category, grade, rank')
           .ilike('name', `%${searchPattern}%`)
-          .limit(1) // عرض نتيجة واحدة فقط
+          .order('grade', { ascending: false })
+          .limit(5)
         
         if (altError) throw altError
         return alternativeData as Result[]
@@ -142,8 +144,8 @@ export function SearchSection() {
       {/* Results */}
       {results && results.length > 0 && (
         <div className="space-y-6">
-          {/* عرض النتيجة الأولى فقط */}
-          {results.slice(0, 1).map((result) => (
+          {/* عرض جميع النتائج المطابقة */}
+          {results.map((result) => (
             <ResultCard
               key={result.no}
               name={result.name || "غير محدد"}
@@ -152,6 +154,15 @@ export function SearchSection() {
               rank={result.rank}
             />
           ))}
+          
+          {/* إذا كان هناك أكثر من نتيجة، اعرض رسالة توضيحية */}
+          {results.length > 1 && (
+            <div className="mt-6 p-4 rounded-lg bg-yellow-50 border border-yellow-200 max-w-md mx-auto">
+              <p className="text-yellow-800 text-sm text-center font-medium">
+                📝 تم العثور على {results.length} نتائج مطابقة. تأكد من اختيار النتيجة الصحيحة.
+              </p>
+            </div>
+          )}
         </div>
       )}
 
